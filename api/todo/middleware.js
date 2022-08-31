@@ -5,13 +5,22 @@ const jwt = require("jsonwebtoken");
 class UserMiddleware{
   validation(){
     return [
-      check('heading').trim().not().isEmpty().withMessage("Heading cannot be empty!").escape().isLength({max:100}).withMessage("Heading is too long!"),
-      check('description').trim().not().isEmpty().withMessage('Description cannot be empty!').isLength({max:800}).withMessage("Description is too long!"),
+      check('heading').trim().not().isEmpty().withMessage("Heading cannot be empty!").escape().isLength({max:100}).withMessage("Heading is too long!")
     ]
   }
   
   async validateTodo(req,res,next){
-    const errors = validationResult(req).mapped()
+    const error = validationResult(req).mapped()
+    const fn = (obj)=>{
+      const x = Object.keys(obj)
+      let a = {}
+      const msg = x.map((item)=>{
+        return a[obj[item].param] = obj[item].msg
+      })
+      return a
+    }
+    const errors = fn(error)
+    //console.log(errors)
     
     if(Object.keys(errors).length > 0){
       return res.json({ok:false,errors});
@@ -34,7 +43,7 @@ class UserMiddleware{
       }
       next()
     } catch (e) {
-      console.log(e);
+      //console.log(e);
       res.json({ok:false,msg:"An error occured!"})
     }
   }

@@ -11,7 +11,10 @@ class UserController{
         email,password
       }
       const result = await User.findOne({email});
-      //console.log(result)
+      //console.log
+      if(!result){
+        return res.json({ok:false,msg:"User doesn't exist!"});
+      }
       const check = await bcrypt.compare(password,result.password);
       //console.log(check)
       if(!check){
@@ -25,7 +28,7 @@ class UserController{
       //console.log(req.session)
       res.json({ok:true,msg:"Login Successfull!"})
     } catch (e) {
-      console.log(e)
+      //console.log(e)
       res.json({ok:false,msg:"An error occured!"})
     }
   }
@@ -33,11 +36,17 @@ class UserController{
     try {
       const {name,email,password} = req.body;
   
+      const check = await User.findOne({email});
+      
+      if(check){
+        return res.json({ok:false,msg:"User already exists!"});
+      }
+  
       const userData = new User({name,email, password})
       const result = await userData.save();
       res.json({ok:true,msg:"Registered successfull!"})
     } catch (e) {
-      console.log(e)
+      //console.log(e)
       res.json({ok:false,msg:"An error occured!"})
     }
   }
@@ -49,7 +58,7 @@ class UserController{
       })
       res.json({ok:true,msg:'Logged out sucessfully!'});
     } catch (e) {
-      console.log(e)
+      //console.log(e)
       res.json({ok:false,msg:"An error occured!"})
     }
   }

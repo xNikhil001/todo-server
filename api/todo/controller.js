@@ -7,21 +7,21 @@ class Controller {
       const result = await Todo.find({uid});
       res.json({ok:true,todo:result});
     } catch (e) {
-      console.log(e);
+      //console.log(e);
       res.json({ok:false,msg:"An error occured!"});
     }
   }
   async addTodo(req,res){
     try {
       const uid = req.session.uid;
-      const {heading,description} = req.body;
+      const {heading} = req.body;
       const todo = new Todo({
-        heading,description,uid
+        heading,uid
       })
       const result = await todo.save();
       res.json({ok:true,todo:result})
     } catch (e) {
-      console.log(e);
+      //console.log(e);
       res.json({ok:false,msg:"An error occured!"});
     }
   }
@@ -29,13 +29,13 @@ class Controller {
     try {
       const uid = req.session.uid;
       const {id} = req.params;
-      const {heading,description} = req.body;
+      const {heading} = req.body;
       const result = await Todo.findOneAndUpdate({_id:id,uid},{
-        heading,description
+        heading
       },{new:true});
       res.json({ok:true,todo:result});
     } catch (e) {
-      console.log(e);
+      //console.log(e);
       res.json({ok:false,msg:"An error occured!"});
     }
   }
@@ -49,7 +49,7 @@ class Controller {
       },{new:true});
       res.json({ok:true,todo:result});
     } catch (e) {
-      console.log(e);
+      //console.log(e);
       res.json({ok:false,msg:"An error occured!"});
     }
   }
@@ -60,7 +60,7 @@ class Controller {
       const result = await Todo.findOneAndDelete({_id:id,uid});
       res.json({ok:true,todo:result});
     } catch (e) {
-      console.log(e);
+      //console.log(e);
       res.json({ok:false,msg:"An error occured!"});
     }
   }

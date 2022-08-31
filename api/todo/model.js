@@ -2,7 +2,6 @@ const {Schema,model} = require('mongoose');
 
 const todoSchema = new Schema({
   heading: {type: String},
-  description: {type: String,maxlength:1024},
   isComplete: {
     type: Boolean,default: false
   },
